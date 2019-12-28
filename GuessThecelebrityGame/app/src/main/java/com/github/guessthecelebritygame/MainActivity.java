@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
             Matcher matcher = pattern.matcher(splitResult[0]);
             while (matcher.find()) {
                 celebURLs.add(matcher.group(1)); //Adding the urls of the images
+              for(String url: celebURLs)
+                  System.out.println(url);
             }
 
 
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
             matcher = pattern.matcher(splitResult[0]);
             while (matcher.find()) {
                 celebNamess.add(matcher.group(1));
+                for(String name: celebNamess)
+                    System.out.println(name);
             }
 
         } catch (ExecutionException e) {

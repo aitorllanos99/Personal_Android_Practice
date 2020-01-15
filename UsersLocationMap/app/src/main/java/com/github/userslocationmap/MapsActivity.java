@@ -8,11 +8,14 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +23,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -72,6 +80,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.clear(); //To dont have all the historic points of the user, we are not Facebook O_-
                 mMap.addMarker(new MarkerOptions().position(newLocation).title("Marker in the Location"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
+
+                //This part gets the whole information from an address just from the latitude and longitude
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(newLocation.latitude,newLocation.longitude,1); //The 1 means how many result we want
+
+                    if( addressList != null && !addressList.isEmpty()){
+                        Toast t = Toast.makeText(getApplicationContext(),addressList.get(0).toString(),Toast.LENGTH_LONG);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
             }
 
             @Override
